@@ -1,0 +1,50 @@
+package movierater;
+
+/**
+ * description - specifies what movie is there
+ * @author Jaxon McGiffin
+ */
+public class whatMovie extends Movie {
+    private static int counter = 0; 
+    
+    private int number;
+    private int rating;
+    /**
+     * tracks each movie
+     * @param title takes title of new movie added
+     * @param year takes year of new movie
+     * @param rating rates the movie
+     */
+    public whatMovie(String title, int year, int rating) {
+        super(title, year);
+        this.number = counter++;
+        this.rating = rating;
+    }
+    
+    public int getNumber() { return number; }
+    public int getRating() { return rating; }
+    /**
+     * 
+     * @return 
+     */
+    public String toString(){
+        return "movie # " + number + " , " + getTitle() + "(" + getYear() + 
+        " ), rating: " + rating + "/100";
+                
+    }
+    /**
+     * checks if there are repeat movies
+     * @param obj 
+     * @return 
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof whatMovie) {
+            whatMovie other = (whatMovie) obj;
+            return this.getTitle().equalsIgnoreCase(other.getTitle());
+        }
+        return false;
+    }
+    
+
+}
