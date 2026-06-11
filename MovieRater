@@ -1,0 +1,92 @@
+package movierater;
+
+import static java.util.Collections.list;
+import javax.swing.JOptionPane;
+
+/**
+ * description - the main application
+ *
+ * @author Jaxon McGiffin
+ */
+public class MovieRater {
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        LinkedList<whatMovie> catalog = new LinkedList<>();
+
+        catalog.add(new whatMovie("The Batman", 2022, 94));
+        catalog.add(new whatMovie("The Dark Knight", 2008, 89));
+        catalog.add(new whatMovie("Superbad", 2007, 85));
+        catalog.add(new whatMovie("Spider-Man: Into the Spider-Verse", 2018, 93));
+        catalog.add(new whatMovie("Interstellar", 2014, 80));
+        catalog.add(new whatMovie("Home Alone", 1990, 78));
+        catalog.add(new whatMovie("Momentum", 2015, 81));
+        catalog.add(new whatMovie("Dawn of the Planet of the Apes", 2014, 97));
+        catalog.add(new whatMovie("Ratatouille", 2007, 88));
+        catalog.add(new whatMovie("Jurassic Park 3", 2001, 84));
+
+        String original = "Initial movie order: \n\n";
+        for (int i = 0; i < catalog.size(); i++) {
+            original += catalog.get(i).toString() + "\n";
+        }
+        JOptionPane.showMessageDialog(null, original, "Movie Rater",
+                JOptionPane.INFORMATION_MESSAGE);
+
+        sortLinkedList(catalog);
+
+        String sorted = "Sorted standings High to Low \n\n";
+        for (int i = 0; i < catalog.size(); i++) {
+            sorted += "Rank #" + (i + 1) + " is " + catalog.get(i) + "\n";
+        }
+
+        JOptionPane.showMessageDialog(null, sorted, "Movie Rater",
+                JOptionPane.INFORMATION_MESSAGE);
+
+        String searchMovie = JOptionPane.showInputDialog(null,
+                "Enter the movie name you want to search for:",
+                "Movie Search",
+                JOptionPane.QUESTION_MESSAGE);
+
+        if (searchMovie != null && !searchMovie.isEmpty()) {
+
+            String searchResult = searchMovieRatings(catalog, searchMovie);
+
+            String search = "Searching for " + searchMovie + " \n\n"
+                    + searchResult + "\n\n";
+            JOptionPane.showMessageDialog(null, search,
+                    "Search Results", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, "Enter a movie next time!",
+                    "Search Problem", JOptionPane.WARNING_MESSAGE);
+
+        }
+    }
+
+    private static void sortLinkedList(LinkedList<whatMovie> catalog) {
+        int n = catalog.size();
+        for (int i = 0; i < n - 1; i++) {
+            int maxNmbr = i;
+            for (int j = i + 1; j < n; j++) {
+                if (catalog.get(j).getRating() > catalog.get(maxNmbr).getRating()) {
+                    maxNmbr = j;
+                }
+            }
+            whatMovie temporary = catalog.get(i);
+            catalog.set(i, catalog.get(maxNmbr));
+            catalog.set(maxNmbr, temporary);
+        }
+    }
+
+    private static String searchMovieRatings(LinkedList<whatMovie> catalog, String searchMovie) {
+        for (int i = 0; i < catalog.size(); i++) {
+            // equalsIgnoreCase this ignores the uppercase and lowercase of the input
+            if (catalog.get(i).getTitle().equalsIgnoreCase(searchMovie)) {
+                return "Movie found at Rank: ( " + (i + 1) + " ) \n" + catalog.get(i);
+            }
+        }
+        return "Movie: " + searchMovie + ", does not exist within these movies";
+    }
+
+}
